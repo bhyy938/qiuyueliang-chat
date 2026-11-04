@@ -1,54 +1,23 @@
-package com.example.liuruyi.ui
+package com.example.liuruyi
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.ExperimentalMaterial3Api
-import com.example.liuruyi.ui.components.InputBar
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.liuruyi.ui.AppNavHost
+import com.example.liuruyi.ui.MainViewModel
+import com.example.liuruyi.ui.theme.LiuruyiTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ChatScreen(vm: MainViewModel, onBack: () -> Unit) {
-    val state by vm.state.collectAsState()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("简单聊天 (编译测试版)") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) { 
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "返回") 
-                    }
-                }
-            )
-        }
-    ) { padding ->
-        Column(Modifier.fillMaxSize()) {
-            // 简单的聊天列表占位
-            Text("这里显示聊天记录（省略复杂UI）", modifier = Modifier.weight(1f))
-            
-            // 底部输入框
-            InputBar(
-                input = state.input,
-                onInputChange = vm::onInputChange,
-                onSend = { vm.sendMessage(state.input) },
-                onStop = vm::stopStreaming,
-                isStreaming = state.isStreaming,
-                enabled = state.activeSessionId.isNotBlank(),
-                quoteMessage = state.quoteMessage,
-                onClearQuote = vm::clearQuote,
-                onPickImage = { /* 省略选图 */ },
-            )
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            LiuruyiTheme {
+                val vm: MainViewModel = viewModel()
+                AppNavHost(vm)
+            }
         }
     }
 }
