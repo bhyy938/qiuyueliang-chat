@@ -124,8 +124,7 @@ fun MessageBubble(
                     val showText = imagePath == null || (message.content.isNotBlank() && message.content != "[图片]")
                     if (showText) {
                         Text(
-                            text = if (isStreaming) message.content + "▌" else highlightText(message.content, highlight),
-                            color = Color(0xFF16181D),
+                text = if (isStreaming) message.content + "▍" else message.content,                            color = Color(0xFF16181D),
                             fontSize = 16.sp,
                             lineHeight = 22.sp,
                         )
