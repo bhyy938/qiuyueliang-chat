@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.liuruyi.data.Message
@@ -24,7 +23,6 @@ fun MessageBubble(
     myAvatarPath: String? = null,
 ) {
     val isMe = message.role == "user"
-    val alignment = if (isMe) Alignment.CenterEnd else Alignment.CenterStart
     val bgColor = if (isMe) Color(0xFF95EC69) else Color.White
     
     Row(
@@ -43,24 +41,12 @@ fun MessageBubble(
                 .clickable(onClick = onLongClick)
                 .padding(12.dp)
         ) {
-            Column {
-                if (message.imagePath != null) {
-                    Image(
-                        bitmap = androidx.compose.ui.graphics.asImageBitmap(
-                            android.graphics.BitmapFactory.decodeFile(message.imagePath)
-                        ),
-                        contentDescription = "图片",
-                        modifier = Modifier.width(120.dp).height(120.dp)
-                    )
-                } else {
-                    Text(
-                        text = if (isStreaming) message.content + "▍" else message.content,
-                        color = Color(0xFF16181D),
-                        fontSize = 16.sp,
-                        lineHeight = 22.sp,
-                    )
-                }
-            }
+            Text(
+                text = if (isStreaming) message.content + "▍" else message.content,
+                color = Color(0xFF16181D),
+                fontSize = 16.sp,
+                lineHeight = 22.sp,
+            )
         }
         
         if (isMe) {
